@@ -1,11 +1,11 @@
 -- Universal Passive Automation installer. Needs an Internet Card (can be removed afterwards).
 -- Paste into the OpenOS shell:
---   wget -f <BASE>install.lua /tmp/i.lua && /tmp/i.lua
+--   wget -f https://raw.githubusercontent.com/Xela10001/universal-passive-automation/master/install.lua /tmp/i.lua && /tmp/i.lua
 -- Re-running it updates the script and keeps your existing config.
 local shell = require("shell")
 local fs = require("filesystem")
 
-local BASE = "https://raw.githubusercontent.com/USER/REPO/main/" -- set to where you host these files
+local BASE = "https://raw.githubusercontent.com/Xela10001/universal-passive-automation/master/"
 
 local function get(file, dest)
   fs.remove(dest)
