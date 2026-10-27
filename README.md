@@ -1,6 +1,17 @@
 # Universal Passive Automation
 
-OpenComputers script for GregTech: New Horizons. It keeps a group of machines (DTPFs, fusion reactors, ...) making whichever product you are lowest on, by switching a wireless redstone frequency that enables that recipe's ingredients.
+OpenComputers script for GregTech: New Horizons.
+It keeps a group of machines making whichever product you are lowest on, by switching a wireless redstone frequency that enables that recipe's ingredients.
+
+## Install
+
+Paste into the OpenOS shell:
+
+```
+wget -f https://raw.githubusercontent.com/Xela10001/universal-passive-automation/master/install.lua /tmp/i.lua && /tmp/i.lua
+```
+
+This installs the script, an example config (only if you don't have one), autostart, and the short command `upa`. Run it again to update; your config is kept.
 
 ## How it works
 
@@ -16,16 +27,6 @@ It then transmits that product's frequency. If nothing qualifies, the transmitte
 - **Internet Card** for installing (can be removed afterwards).
 - **Adapter** touching the group's ME controller (or an ME interface).
 - One WR-CBE **wireless receiver** per recipe, powering that recipe's toggle bus.
-
-## Install
-
-Paste into the OpenOS shell:
-
-```
-wget -f https://raw.githubusercontent.com/Xela10001/universal-passive-automation/master/install.lua /tmp/i.lua && /tmp/i.lua
-```
-
-This installs the script, an example config (only if you don't have one), autostart, and the short command `upa`. Run it again to update; your config is kept.
 
 ## Configure
 
@@ -54,6 +55,24 @@ return {
 Amounts accept numbers (`150e6`) or quoted strings with `K/M/B/T` (`"150M"`).
 
 Find keys with `upa dump <text>`, e.g. `upa dump spacetime`.
+
+### Default DTPF config
+
+The installed config covers every DTPF product, each using its best recipe below Stellar catalyst (Exotic where one exists). Products that only have a Stellar recipe are not included. Every product is capped at 10k items / 10M L and needs at least 10k of each item ingredient and 1M L of each fluid ingredient. Programmed circuits and other non-consumed inputs are not checked, so keep them in the machine permanently. Delete any product you don't build a receiver for. Keys marked `verify` in the config haven't been checked in game.
+
+| Freq | Product | Freq | Product |
+|------|---------|------|---------|
+| 1001 | Quantum Anomaly | 1012 | Raw Tesseract |
+| 1002 | Superconductor Base LuV | 1013 | Superconductor Base UEV |
+| 1003 | Superconductor Base ZPM | 1014 | Superconductor Base UIV |
+| 1004 | Superconductor Base UV | 1015 | SpaceTime |
+| 1005 | Bedrockium | 1016 | Superconductor Base UMV |
+| 1006 | Chromatic Glass | 1017 | Shirabon |
+| 1007 | Neutronium | 1018 | Quantum (+ Astral Titanium) |
+| 1008 | Cosmic Neutronium | 1019 | Dimensionally Shifted Superfluid |
+| 1009 | Infinity | 1020 | Six-Phased Copper |
+| 1010 | Superconductor Base UHV | 1021 | Dark Matter |
+| 1011 | Hypogen | | |
 
 ## Commands
 
