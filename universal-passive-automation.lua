@@ -131,9 +131,10 @@ local function read()
   for _, f in ipairs(me.getFluidsInNetwork()) do
     stock[f.name], labels[f.name] = f.amount, f.label
   end
-  -- ponytail: one filtered call per item key; full item list is too big on a GTNH network
-  for k, filter in pairs(items) do
-    local s = me.getItemsInNetwork(filter)[1]
+  -- Direct lookup per item (GTNH OC). getItemsInNetwork(filter) never matches names: OC passes
+  -- Lua strings in tables as byte arrays and the filter compares them to Java strings.
+  for k, it in pairs(items) do
+    local s = me.getItemInNetwork(it.name, it.damage)
     if s then stock[k], labels[k] = s.size, s.label end
   end
   return stock
