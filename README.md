@@ -13,6 +13,12 @@ wget -f https://raw.githubusercontent.com/Xela10001/universal-passive-automation
 
 This installs the script, an example config (only if you don't have one), autostart, and the short command `upa`. Run it again to update; your config is kept.
 
+For a fusion reactor computer, add `fusion` at the end to start from the fusion config instead (every fusion recipe, frequencies 2001-2068, grouped by MK tier):
+
+```
+wget -f https://raw.githubusercontent.com/Xela10001/universal-passive-automation/master/install.lua /tmp/i.lua && /tmp/i.lua fusion
+```
+
 ## How it works
 
 Every check (default 60 s), it reads your ME stock and picks the product with the lowest `stock / weight` that:

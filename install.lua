@@ -17,8 +17,10 @@ end
 fs.makeDirectory("/home/bin")
 get("universal-passive-automation.lua", "/home/bin/universal-passive-automation.lua")
 
+-- Starting config: DTPF by default, fusion with "/tmp/i.lua fusion".
+local preset = ({...})[1] == "fusion" and "universal-passive-automation-fusion.cfg" or "universal-passive-automation.cfg"
 local cfg = "/home/universal-passive-automation.cfg"
-if fs.exists(cfg) then print("Kept existing " .. cfg) else get("universal-passive-automation.cfg", cfg) end
+if fs.exists(cfg) then print("Kept existing " .. cfg) else get(preset, cfg) end
 
 -- Autostart on boot + short "upa" command, added once.
 local rc = "/home/.shrc"

@@ -172,12 +172,12 @@ local function draw(stock, prev, active)
     r.amt = string.format("%" .. wh .. "s %s %-" .. wc .. "s", r.h, r.p.cap and "/" or " ", r.c)
   end
   local wa = #rows > 0 and #rows[1].amt or 0
-  -- uncapped first (lowest bar first), then capped (lowest cap first); ties keep config order
+  -- uncapped first (lowest stock first), then capped (lowest cap first); ties keep config order
   table.sort(rows, function(a, b)
     local ca, cb = a.p.cap, b.p.cap
     if (ca == nil) ~= (cb == nil) then return ca == nil end
     if ca and ca ~= cb then return ca < cb end
-    if not ca and a.f ~= b.f then return a.f < b.f end
+    if not ca and a.have ~= b.have then return a.have < b.have end
     return a.i < b.i
   end)
 
@@ -185,7 +185,7 @@ local function draw(stock, prev, active)
     local p, on = r.p, r.p == active
     local n = math.floor(r.f * BAR)
     put(string.format("%s %-" .. w .. "s ", on and ">" or " ", name(p.key)), on and BLUE or nil)
-    put("[" .. string.rep("█", n) .. string.rep("░", BAR - n) .. "]", r.f >= 0.25 and GREEN or RED)
+    put("[" .. string.rep("█", n) .. string.rep("░", BAR - n) .. "]", r.f >= 0.75 and GREEN or r.f >= 0.25 and YELLOW or RED)
     io.write(string.format(" %3d%% ", math.floor(r.f * 100)))
     put(p.cap and "of target " or "vs others ", GREY)
     io.write(string.format(" %-" .. wa .. "s ", r.amt))
