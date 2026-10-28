@@ -159,15 +159,27 @@ local function draw(stock, prev, active)
     dry and "  [DRY RUN: not switching machines]" or ""), GREY)
   put(string.rep("─", gpu.getResolution() - 1) .. "\n", GREY) -- -1: a full-width line would wrap
 
-  local rows, w, wa = {}, 0, 0
+  -- amount column: stock right-aligned, cap left-aligned, so the "/" lines up
+  local rows, w, wh, wc = {}, 0, 0, 0
   for i, p in ipairs(cfg.products) do
     local have = stock[p.key] or 0
     local r = {p = p, i = i, have = have, f = fill(p, cfg.products, stock),
-      amt = fmt(have) .. (p.cap and " / " .. fmt(p.cap) or "")}
-    rows[i], w, wa = r, math.max(w, #name(p.key)), math.max(wa, #r.amt)
+      h = fmt(have), c = p.cap and fmt(p.cap) or ""}
+    rows[i], w = r, math.max(w, #name(p.key))
+    wh, wc = math.max(wh, #r.h), math.max(wc, #r.c)
   end
-  -- lowest bar first; ties keep config order
-  table.sort(rows, function(a, b) if a.f ~= b.f then return a.f < b.f end return a.i < b.i end)
+  for _, r in ipairs(rows) do
+    r.amt = string.format("%" .. wh .. "s %s %-" .. wc .. "s", r.h, r.p.cap and "/" or " ", r.c)
+  end
+  local wa = #rows > 0 and #rows[1].amt or 0
+  -- uncapped first (lowest bar first), then capped (lowest cap first); ties keep config order
+  table.sort(rows, function(a, b)
+    local ca, cb = a.p.cap, b.p.cap
+    if (ca == nil) ~= (cb == nil) then return ca == nil end
+    if ca and ca ~= cb then return ca < cb end
+    if not ca and a.f ~= b.f then return a.f < b.f end
+    return a.i < b.i
+  end)
 
   for _, r in ipairs(rows) do
     local p, on = r.p, r.p == active
