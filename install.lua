@@ -9,7 +9,8 @@ local BASE = "https://raw.githubusercontent.com/Xela10001/universal-passive-auto
 
 local function get(file, dest)
   fs.remove(dest)
-  shell.execute("wget -fq " .. BASE .. file .. " " .. dest)
+  -- "?t=" bypasses GitHub's raw CDN cache, which can serve a stale file for minutes after a push
+  shell.execute("wget -fq " .. BASE .. file .. "?t=" .. math.floor(os.time()) .. " " .. dest)
   assert(fs.exists(dest), "download failed: " .. BASE .. file)
   print("Installed " .. dest)
 end
@@ -20,6 +21,7 @@ get("universal-passive-automation.lua", "/home/bin/universal-passive-automation.
 -- Starting config: DTPF by default, fusion with "/tmp/i.lua fusion".
 local preset = ({...})[1] == "fusion" and "universal-passive-automation-fusion.cfg" or "universal-passive-automation.cfg"
 local cfg = "/home/universal-passive-automation.cfg"
+print("Config preset: " .. preset)
 if fs.exists(cfg) then print("Kept existing " .. cfg) else get(preset, cfg) end
 
 -- Autostart on boot + short "upa" command, added once.
